@@ -1,0 +1,27 @@
+{
+  "name": "dear_diary_server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "nodemon node index.js",
+    "dev": "nodemon node index.js",
+    "test": "echo \"Hello METANIT.COM\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.5.0",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "4.17.21",
+    "mongodb": "^6.5.0",
+    "mongoose": "^8.3.4",
+    "nodemailer": "^6.9.13",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
