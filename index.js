@@ -16,6 +16,7 @@ const filesRouter = require('./router/filesRouter');
 const sListRouter = require('./router/sListRouter');
 const financeRouter = require('./router/financeRouter');
 const errorMiddleware = require('./middleware/errorMiddleware');
+const diagramRouter = require('./router/diagramRouter');
 
 // const ObjectId = require('mongodb').ObjectId;
 const MongoClient = require('mongodb').MongoClient;
@@ -39,6 +40,7 @@ app.use('/list', listRouter);
 app.use('/files', filesRouter);
 app.use('/s_list', sListRouter);
 app.use('/finance', financeRouter);
+app.use('/diagram', diagramRouter);
 app.use('/storage/images', express.static('storage/images'));
 app.use(errorMiddleware);
 

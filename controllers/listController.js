@@ -42,12 +42,12 @@ class ListController {
   async deleteItem(req, res, next) {
     try {
       const item_id = req.query.item_id;
+      if (!item_id) {
+        return next(ApiError.BadRequest('Not found item_id'));
+      }
       const user = await userService.getUserFromCookies(req.cookies);
       if (!user) {
         return next(ApiError.UnauthorizedError());
-      }
-      if (!item_id) {
-        return next(ApiError.BadRequest('Not found item_id'));
       }
       const list = await listService.deleteItem(user.id, item_id);
       return res.json(list);
