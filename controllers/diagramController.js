@@ -7,12 +7,64 @@ class DiagramController {
 
   async getDataList(req, res, next) {
     try {
+      const categoryId = req.query.categoryId;
+      if (!categoryId) {
+        return next(ApiError.BadRequest('Not found categoryId'));
+      }
+      const chapterId = req.query.chapterId;
+      if (!chapterId) {
+        return next(ApiError.BadRequest('Not found chapterId'));
+      }
       const user = await userService.getUserFromCookies(req.cookies);
       if (!user) {
         return next(ApiError.UnauthorizedError());
       }
-      const transCategoryList = await diagramService.getDataList(user.id);
+      const transCategoryList = await diagramService.getDataList(
+        user.id,
+        chapterId,
+        categoryId
+      );
       return res.json(transCategoryList);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async updateItem(req, res, next) {
+    try {
+      const body = req.body;
+      if (!body) {
+        return next(ApiError.BadRequest('Нет тела запроса', []));
+      }
+      const user = await userService.getUserFromCookies(req.cookies);
+      if (!user) {
+        return next(ApiError.UnauthorizedError());
+      }
+      const updatedCategory = await diagramService.updateItem(user.id, body);
+      if (!updatedCategory) {
+        return next(ApiError.BadRequest('Не удалось обновить запись', []));
+      }
+      return res.json(updatedCategory);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async deleteItem(req, res, next) {
+    try {
+      const id = req.query.id;
+      if (!id) {
+        return next(ApiError.BadRequest('Not found id'));
+      }
+      const user = await userService.getUserFromCookies(req.cookies);
+      if (!user) {
+        return next(ApiError.UnauthorizedError());
+      }
+      const deletedItem = await diagramService.deleteItem(user.id, id);
+      if (!deletedItem) {
+        return next(ApiError.BadRequest('Не удалось обновить запись', []));
+      }
+      return res.json(deletedItem);
     } catch (e) {
       next(e);
     }

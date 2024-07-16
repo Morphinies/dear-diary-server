@@ -96,14 +96,65 @@ class diagramService {
     }
   }
   // data
-  async getDataList(userId) {
-    const transactions = await DiagramDataItem.find({ userId });
-    if (!transactions) {
+  async getDataList(userId, chapterId, categoryId) {
+    let dataList;
+    if (categoryId === '1') {
+      dataList = await DiagramDataItem.find({ userId, chapterId });
+    } else {
+      dataList = await DiagramDataItem.find({ userId, categoryId });
+    }
+
+    if (!dataList) {
       return [];
     } else {
-      return transactions.map((trans) => new DiagramDataItemDto(trans));
+      return dataList.map((trans) => new DiagramDataItemDto(trans));
     }
   }
+
+  async updateItem(userId, item) {
+    if (!item.id) {
+      const createdItem = await DiagramDataItem.create({
+        userId,
+        name: item.name,
+        desc: item.desc,
+        date: item.date,
+        value: item.value,
+        chapterId: item.chapterId,
+        categoryId: item.categoryId,
+      });
+      const itemDto = new DiagramDataItemDto(createdItem);
+      return itemDto ?? null;
+    } else {
+      const editItem = await DiagramDataItem.findOne({
+        userId,
+        _id: item.id,
+      });
+      if (editItem) {
+        editItem.name = item.name;
+        editItem.desc = item.desc;
+        editItem.date = item.date;
+        editItem.value = item.value;
+        editItem.updatedAt = +new Date();
+        editItem.categoryId = item.categoryId;
+        await editItem.save();
+        const itemDto = new DiagramDataItemDto(editItem);
+        return itemDto;
+      } else {
+        return null;
+      }
+    }
+  }
+
+  async deleteItem(userId, id) {
+    const item = await DiagramDataItem.deleteOne({ userId, _id: id });
+    if (!item) {
+      return;
+    } else {
+      return id;
+    }
+  }
+
+  // old
   async updateTransaction(userId, trans) {
     if (trans.id) {
       const updatedTrans = await DiagramDataItem.findOne({

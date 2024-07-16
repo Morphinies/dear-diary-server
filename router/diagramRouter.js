@@ -6,6 +6,14 @@ const diagramController = require('../controllers/diagramController');
 // data
 diagramRouter.get('/data_list', authMiddleware, diagramController.getDataList);
 
+diagramRouter.post(
+  '/update_item',
+  authMiddleware,
+  diagramController.updateItem
+);
+
+diagramRouter.delete('/del_item', authMiddleware, diagramController.deleteItem);
+
 // category
 diagramRouter.get(
   '/category_list',
