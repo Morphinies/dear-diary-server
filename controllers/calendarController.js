@@ -1,35 +1,19 @@
 const ApiError = require('../exceptions/apiError');
-const menuService = require('../service/menuService');
 const userService = require('../service/userService');
+const calendarService = require('../service/calendarService');
 
-class menuController {
-  async getList(req, res, next) {
+class calendarController {
+  async getCalendarData(req, res, next) {
     try {
-      const typeId = req.query.typeId;
-      const params = {};
-      if (typeId) params.typeId = typeId;
-      const user = await userService.getUserFromCookies(req.cookies);
-      if (!user) {
-        return next(ApiError.UnauthorizedError());
-      }
-      const list = await menuService.getList(user.id, params);
-      return res.json(list);
-    } catch (e) {
-      next(e);
-    }
-  }
-
-  async getItem(req, res, next) {
-    try {
-      const id = req.query.id;
+      const id = req.query.menuId;
       if (!id) {
-        return next(ApiError.BadRequest('id is required', []));
+        return next(ApiError.BadRequest('menuId is required', []));
       }
       const user = await userService.getUserFromCookies(req.cookies);
       if (!user) {
         return next(ApiError.UnauthorizedError());
       }
-      const item = await menuService.getItem(user.id, id);
+      const item = await calendarService.getCalendarData(user.id, id);
       return res.json(item);
     } catch (e) {
       next(e);
@@ -49,7 +33,7 @@ class menuController {
       if (!user) {
         return next(ApiError.UnauthorizedError());
       }
-      const updatedItem = await menuService.update(user.id, body);
+      const updatedItem = await calendarService.update(user.id, body);
       if (!updatedItem) {
         return next(ApiError.BadRequest('Не удалось обновить запись', []));
       }
@@ -69,7 +53,7 @@ class menuController {
       if (!user) {
         return next(ApiError.UnauthorizedError());
       }
-      const updatedItem = await menuService.delete(user.id, itemId);
+      const updatedItem = await calendarService.delete(user.id, itemId);
       if (!updatedItem) {
         return next(ApiError.BadRequest('Не удалось обновить запись', []));
       }
@@ -80,4 +64,4 @@ class menuController {
   }
 }
 
-module.exports = new menuController();
+module.exports = new calendarController();

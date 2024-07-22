@@ -1,27 +1,19 @@
 const fs = require('fs');
-const Menu = require('../models/menu');
-const MenuDto = require('../dtos/menuDto');
+const CalendarDataDto = require('../dtos/menuDto');
+const CalendarData = require('../models/CalendarData');
 
-class MenuService {
-  async getList(userId, params) {
-    const list = await Menu.find({ userId, ...params });
-    if (!list) {
-      return;
-    } else {
-      return list.map((list) => new MenuDto(list));
-    }
-  }
-  async getItem(userId, id) {
-    const item = await Menu.findOne({ userId, _id: id });
+class calendarService {
+  async getCalendarData(userId, id) {
+    const item = await CalendarData.findOne({ userId, _id: id });
     if (!item) {
       return;
     } else {
-      return new MenuDto(item);
+      return new CalendarDataDto(item);
     }
   }
   async update(userId, item) {
     if (item.id) {
-      const updatedList = await Menu.findOne({ userId, _id: item.id });
+      const updatedList = await CalendarData.findOne({ userId, _id: item.id });
       if (updatedList) {
         updatedList.icon = item.icon;
         updatedList.name = item.name;
@@ -29,29 +21,29 @@ class MenuService {
         updatedList.typeId = item.typeId;
         updatedList.updatedAt = +new Date();
         updatedList.save();
-        const itemDto = new MenuDto(updatedList);
+        const itemDto = new CalendarDataDto(updatedList);
         return itemDto;
       } else {
         return null;
       }
     } else {
-      const createdItem = await Menu.create({
+      const createdItem = await CalendarData.create({
         userId,
         name: item.name,
         sort: item.sort,
         icon: item.icon,
         typeId: item.typeId,
       });
-      const itemDto = new MenuDto(createdItem);
+      const itemDto = new CalendarDataDto(createdItem);
       return itemDto ?? null;
     }
   }
   async delete(userId, itemId) {
-    const item = await Menu.findOne({ userId, _id: itemId });
+    const item = await CalendarData.findOne({ userId, _id: itemId });
     if (item?.icon) {
       fs.unlinkSync(item.icon);
     }
-    const deletedItem = await Menu.deleteOne({ userId, _id: itemId });
+    const deletedItem = await CalendarData.deleteOne({ userId, _id: itemId });
     if (deletedItem?.deletedCount) {
       return itemId;
     } else {
@@ -60,4 +52,4 @@ class MenuService {
   }
 }
 
-module.exports = new MenuService();
+module.exports = new calendarService();
