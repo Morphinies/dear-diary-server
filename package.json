@@ -2,8 +2,8 @@
   "name": "dear_diary_server",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon node index.js",
-    "dev": "nodemon node index.js",
+    "start": "nodemon index.ts",
+    "dev": "nodemon index.ts",
     "test": "echo \"Hello METANIT.COM\" && exit 1"
   },
   "dependencies": {
@@ -22,6 +22,17 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/express-fileupload": "^1.5.0",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^22.0.2",
+    "@types/nodemailer": "^6.4.15",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   }
 }
