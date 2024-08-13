@@ -10,3 +10,4 @@ const GraphChapter = new Schema({
 });
 
 export default model('graph_chapter', GraphChapter);
+export type GraphChapterType = typeof GraphChapter;

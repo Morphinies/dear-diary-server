@@ -1,10 +1,11 @@
+import { Request, Response } from 'express';
 import ApiError from '../exceptions/apiError';
 import userService from '../service/userService';
 import graphService from '../service/graphService';
 
 class GraphController {
   // data
-  async getDataList(req: any, res: any, next: any) {
+  async getDataList(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const chapterId = req.query.chapterId;
       if (!chapterId) {
@@ -20,11 +21,11 @@ class GraphController {
       );
       return res.json(transCategoryList);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateItem(req: any, res: any, next: any) {
+  async updateItem(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const body = req.body;
       if (!body) {
@@ -40,11 +41,11 @@ class GraphController {
       }
       return res.json(updatedCategory);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async deleteItem(req: any, res: any, next: any) {
+  async deleteItem(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const id = req.query.id;
       if (!id) {
@@ -60,13 +61,13 @@ class GraphController {
       }
       return res.json(deletedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
   // chapter
 
-  async getChapterList(req: any, res: any, next: any) {
+  async getChapterList(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const menuId = req.query.menuId;
       if (!menuId) {
@@ -79,11 +80,11 @@ class GraphController {
       const chapterList = await graphService.getChapterList(user.id, menuId);
       return res.json(chapterList);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateChapter(req: any, res: any, next: any) {
+  async updateChapter(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const body = req.body;
       if (!body) {
@@ -99,11 +100,11 @@ class GraphController {
       }
       return res.json(updatedCategory);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async deleteChapter(req: any, res: any, next: any) {
+  async deleteChapter(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const id = req.query.id;
       if (!id) {
@@ -119,7 +120,7 @@ class GraphController {
       }
       return res.json(updatedCategory);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 }

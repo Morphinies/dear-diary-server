@@ -11,3 +11,4 @@ const SListItem = new Schema({
 });
 
 export default model('s_list_item', SListItem);
+export type SListItemType = typeof SListItem;

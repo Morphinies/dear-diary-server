@@ -1,9 +1,10 @@
+import { Request, Response } from 'express';
 import ApiError from '../exceptions/apiError';
 import userService from '../service/userService';
 import menuService from '../service/menuService';
 
 class menuController {
-  async getList(req: any, res: any, next: any) {
+  async getList(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const typeId = req.query.typeId;
       const params: any = {};
@@ -15,11 +16,11 @@ class menuController {
       const list = await menuService.getList(user.id, params);
       return res.json(list);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async getItem(req: any, res: any, next: any) {
+  async getItem(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const id = req.query.id;
       if (!id) {
@@ -32,11 +33,11 @@ class menuController {
       const item = await menuService.getItem(user.id, id);
       return res.json(item);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async update(req: any, res: any, next: any) {
+  async update(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const body = req.body;
       if (!body) {
@@ -55,11 +56,11 @@ class menuController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async delete(req: any, res: any, next: any) {
+  async delete(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const itemId = req.query.id;
       if (!itemId) {
@@ -75,7 +76,7 @@ class menuController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 }

@@ -5,3 +5,4 @@ const Role = new Schema({
 });
 
 export default model('role', Role);
+export type RoleType = typeof Role;

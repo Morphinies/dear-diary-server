@@ -8,7 +8,7 @@ import CalendarDayDataDto from '../dtos/calendarDayDataDto';
 import CalendarDayTaskDto from '../dtos/calendarDayTaskDto';
 
 class calendarService {
-  async getDeadlines(userId: any, deadlineIds: any) {
+  async getDeadlines(userId: string, deadlineIds: string[]) {
     const deadlines = [];
     for (let deadlineListId of deadlineIds) {
       const listData = await listService.getActiveList(userId, deadlineListId);
@@ -20,7 +20,7 @@ class calendarService {
     }
     return deadlines;
   }
-  async getTasks(userId: any, menuId: any) {
+  async getTasks(userId: string, menuId: string) {
     const items = await CalendarDayTask.find({ userId, menuId });
     if (!items) {
       return [];
@@ -28,7 +28,7 @@ class calendarService {
       return items.map((item: any) => new CalendarDayTaskDto(item));
     }
   }
-  async getCalendarDayDataList(userId: any, menuId: any) {
+  async getCalendarDayDataList(userId: string, menuId: string) {
     const dayDataList = await CalendarDayData.find({ userId, menuId });
     if (!dayDataList) {
       return [];
@@ -36,7 +36,7 @@ class calendarService {
       return dayDataList.map((item: any) => new CalendarDayDataDto(item));
     }
   }
-  async getCalendarData(userId: any, menuId: any) {
+  async getCalendarData(userId: string, menuId: string) {
     const item = await CalendarData.findOne({ userId, menuId });
     if (!item) {
       return;
@@ -50,7 +50,7 @@ class calendarService {
       return { ...itemDto, deadlines, dayDataList, tasks };
     }
   }
-  async updateCalendarData(userId: any, item: any) {
+  async updateCalendarData(userId: string, item: any) {
     if (item.id) {
       const updatedItem: any = await CalendarData.findOne({
         userId,
@@ -90,7 +90,7 @@ class calendarService {
       return itemDto ? { ...itemDto, deadlines, dayDataList } : null;
     }
   }
-  async deleteCalendarData(userId: any, itemId: any) {
+  async deleteCalendarData(userId: string, itemId: any) {
     const item: any = await CalendarData.findOne({ userId, _id: itemId });
     if (item?.icon) {
       fs.unlinkSync(item.icon);
@@ -102,7 +102,7 @@ class calendarService {
       return;
     }
   }
-  async updateCalendarDayData(userId: any, item: any) {
+  async updateCalendarDayData(userId: string, item: any) {
     const updatedItem = await CalendarDayData.findOne({
       userId,
       date: item.date,
@@ -126,7 +126,7 @@ class calendarService {
       return itemDto ? itemDto : null;
     }
   }
-  async updateCalendarDayTask(userId: any, item: any) {
+  async updateCalendarDayTask(userId: string, item: any) {
     const updatedItem = await CalendarDayTask.findOne({
       userId,
       _id: item.id,
@@ -147,7 +147,7 @@ class calendarService {
       return itemDto ? itemDto : null;
     }
   }
-  async deleteCalendarDayTask(userId: any, id: string) {
+  async deleteCalendarDayTask(userId: string, id: string) {
     const deletedItem = await CalendarDayTask.deleteOne({ userId, _id: id });
     if (deletedItem?.deletedCount) {
       return id;

@@ -1,11 +1,12 @@
+import { Request, Response } from 'express';
 import ApiError from '../exceptions/apiError';
 import userService from '../service/userService';
 import calendarService from '../service/calendarService';
 
 class calendarController {
-  async getCalendarData(req: any, res: any, next: any) {
+  async getCalendarData(req: Request, res: Response, next: (e: Error) => void) {
     try {
-      const menuId = req.query.menuId;
+      const menuId = req.query.menuId as string | undefined;
       if (!menuId) {
         return next(ApiError.BadRequest('menuId is required', []));
       }
@@ -16,11 +17,15 @@ class calendarController {
       const item = await calendarService.getCalendarData(user.id, menuId);
       return res.json(item);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateCalendarData(req: any, res: any, next: any) {
+  async updateCalendarData(
+    req: Request,
+    res: Response,
+    next: (e: Error) => void
+  ) {
     try {
       const body = req.body;
       if (!body) {
@@ -39,11 +44,15 @@ class calendarController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async deleteCalendarData(req: any, res: any, next: any) {
+  async deleteCalendarData(
+    req: Request,
+    res: Response,
+    next: (e: Error) => void
+  ) {
     try {
       const itemId = req.query.id;
       if (!itemId) {
@@ -62,11 +71,15 @@ class calendarController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateCalendarDayData(req: any, res: any, next: any) {
+  async updateCalendarDayData(
+    req: Request,
+    res: Response,
+    next: (e: Error) => void
+  ) {
     try {
       const body = req.body;
       if (!body) {
@@ -85,11 +98,15 @@ class calendarController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateCalendarDayTask(req: any, res: any, next: any) {
+  async updateCalendarDayTask(
+    req: Request,
+    res: Response,
+    next: (e: Error) => void
+  ) {
     try {
       const body = req.body;
       if (!body) {
@@ -108,13 +125,17 @@ class calendarController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async deleteCalendarDayTask(req: any, res: any, next: any) {
+  async deleteCalendarDayTask(
+    req: Request,
+    res: Response,
+    next: (e: Error) => void
+  ) {
     try {
-      const itemId = req.query.id;
+      const itemId = req.query.id as string | undefined;
       if (!itemId) {
         return next(ApiError.BadRequest('id is required', []));
       }
@@ -131,7 +152,7 @@ class calendarController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 }

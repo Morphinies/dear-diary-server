@@ -1,14 +1,14 @@
-// const jwt = require('jsonwebtoken');
 import * as jwt from 'jsonwebtoken';
 import { secret } from '../config';
+import { Request, Response } from 'express';
 
 export default function (roles: any) {
-  return function (req: any, res: any, next: any) {
+  return function (req: Request, res: Response, next: (e?: any) => void) {
     if (req.method === 'OPTIONS') {
       next();
     }
     try {
-      const token = req.headers.authorization.split(' ')[1];
+      const token = (req.headers as any).authorization.split(' ')[1];
       if (!token) {
         return res.status(403).json({ message: 'Пользователь не авторизован' });
       }

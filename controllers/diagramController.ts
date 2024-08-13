@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import ApiError from '../exceptions/apiError';
 import userService from '../service/userService';
 import diagramService from '../service/diagramService';
@@ -5,7 +6,7 @@ import diagramService from '../service/diagramService';
 class DiagramController {
   // data
 
-  async getDataList(req: any, res: any, next: any) {
+  async getDataList(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const categoryId = req.query.categoryId;
       if (!categoryId) {
@@ -26,11 +27,11 @@ class DiagramController {
       );
       return res.json(transCategoryList);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateItem(req: any, res: any, next: any) {
+  async updateItem(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const body = req.body;
       if (!body) {
@@ -46,11 +47,11 @@ class DiagramController {
       }
       return res.json(updatedCategory);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async deleteItem(req: any, res: any, next: any) {
+  async deleteItem(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const id = req.query.id;
       if (!id) {
@@ -66,13 +67,13 @@ class DiagramController {
       }
       return res.json(deletedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
   // category
 
-  async getCategoryList(req: any, res: any, next: any) {
+  async getCategoryList(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const chapterId = req.query.chapterId;
       if (!chapterId) {
@@ -88,11 +89,11 @@ class DiagramController {
       );
       return res.json(transCategoryList);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateCategory(req: any, res: any, next: any) {
+  async updateCategory(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const body = req.body;
       if (!body) {
@@ -111,11 +112,11 @@ class DiagramController {
       }
       return res.json(updatedCategory);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async deleteCategory(req: any, res: any, next: any) {
+  async deleteCategory(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const id = req.query.id;
       if (!id) {
@@ -131,13 +132,13 @@ class DiagramController {
       }
       return res.json(updatedCategory);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
   // chapter
 
-  async getChapterList(req: any, res: any, next: any) {
+  async getChapterList(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const menuId = req.query.menuId;
       if (!menuId) {
@@ -150,11 +151,11 @@ class DiagramController {
       const chapterList = await diagramService.getChapterList(user.id, menuId);
       return res.json(chapterList);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateChapter(req: any, res: any, next: any) {
+  async updateChapter(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const body = req.body;
       if (!body) {
@@ -170,11 +171,11 @@ class DiagramController {
       }
       return res.json(updatedCategory);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async deleteChapter(req: any, res: any, next: any) {
+  async deleteChapter(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const id = req.query.id;
       if (!id) {
@@ -190,7 +191,7 @@ class DiagramController {
       }
       return res.json(updatedCategory);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 }

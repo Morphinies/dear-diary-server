@@ -19,4 +19,3 @@ authRouter.get('/users', authMiddleware, userController.getUsers);
 authRouter.get('/is_auth', authMiddleware, userController.checkAuth);
 
 export default authRouter;
-// module.exports = authRouter;

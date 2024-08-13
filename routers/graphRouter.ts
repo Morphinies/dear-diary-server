@@ -29,5 +29,4 @@ graphRouter.delete(
   graphController.deleteChapter
 );
 
-// module.exports = graphRouter;
 export default graphRouter;

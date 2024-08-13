@@ -8,3 +8,4 @@ const User = new Schema({
 });
 
 export default model('user', User);
+export type UserType = typeof User;

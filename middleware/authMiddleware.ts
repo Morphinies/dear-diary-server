@@ -1,11 +1,9 @@
-// import jwt from 'jsonwebtoken'
-import { secret } from '../config';
+// import { secret } from '../config';
+import { Request, Response } from 'express';
 import ApiError from '../exceptions/apiError';
 import tokenSetrvice from '../service/tokenService';
-// const ApiError = require('../exceptions/apiError');
-// const tokenSetrvice = require('../service/tokenService');
 
-export default function (req: any, res: any, next: any) {
+export default function (req: Request, res: Response, next: (e?: any) => void) {
   try {
     const authorizationHeader = req.headers.authorization;
     if (!authorizationHeader) {
@@ -19,7 +17,7 @@ export default function (req: any, res: any, next: any) {
     if (!userData) {
       return next(ApiError.UnauthorizedError());
     }
-    req.user = userData;
+    (req as any).user = userData;
     next();
   } catch (e) {
     return next(ApiError.UnauthorizedError());

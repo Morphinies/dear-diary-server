@@ -12,3 +12,4 @@ const DiagramDataItem = new Schema({
 });
 
 export default model('diagram_data_item', DiagramDataItem);
+export type DiagramDataItemType = typeof DiagramDataItem;

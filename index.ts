@@ -58,7 +58,6 @@ const mongoClient = new MongoClient(DB_URL);
   }
 })();
 
-// прослушиваем прерывание работы программы (ctrl-c)
 process.on('SIGINT', async () => {
   await mongoClient.close();
   console.log('Приложение завершило работу');

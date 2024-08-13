@@ -13,3 +13,4 @@ const ListItem = new Schema({
 });
 
 export default model('list_item', ListItem);
+export type ListItemType = typeof ListItem;

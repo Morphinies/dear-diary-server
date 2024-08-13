@@ -1,9 +1,10 @@
+import { Request, Response } from 'express';
 import ApiError from '../exceptions/apiError';
 import userService from '../service/userService';
 import sListService from '../service/sListService';
 
 class SListController {
-  async getList(req: any, res: any, next: any) {
+  async getList(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const menuId = req.query.menuId;
       const user: any = await userService.getUserFromCookies(req.cookies);
@@ -16,11 +17,11 @@ class SListController {
       const list = await sListService.getList(user.id, menuId);
       return res.json(list);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 
-  async updateItem(req: any, res: any, next: any) {
+  async updateItem(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const body = req.body;
       if (!body) {
@@ -36,10 +37,10 @@ class SListController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
-  async deleteItem(req: any, res: any, next: any) {
+  async deleteItem(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const item_id = req.query.item_id;
       const user: any = await userService.getUserFromCookies(req.cookies);
@@ -52,10 +53,10 @@ class SListController {
       const list = await sListService.deleteItem(user.id, item_id);
       return res.json(list);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
-  async updateItemSort(req: any, res: any, next: any) {
+  async updateItemSort(req: Request, res: Response, next: (e: Error) => void) {
     try {
       const body = req.body;
       if (!body) {
@@ -71,7 +72,7 @@ class SListController {
       }
       return res.json(updatedItem);
     } catch (e) {
-      next(e);
+      next(e as Error);
     }
   }
 }

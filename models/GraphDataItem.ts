@@ -11,3 +11,4 @@ const GraphDataItem = new Schema({
 });
 
 export default model('graph_data_item', GraphDataItem);
+export type GraphDataItemType = typeof GraphDataItem;

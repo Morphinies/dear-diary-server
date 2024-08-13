@@ -6,3 +6,4 @@ const Token = new Schema({
 });
 
 export default model('token', Token);
+export type TokenType = typeof Token;

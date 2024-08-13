@@ -11,3 +11,4 @@ const Menu = new Schema({
 });
 
 export default model('menu', Menu);
+export type MenuType = typeof Menu;
