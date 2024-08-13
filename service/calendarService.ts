@@ -3,7 +3,9 @@ import listService from './listService';
 import CalendarData from '../models/CalendarData';
 import CalendarDataDto from '../dtos/calendarDataDto';
 import CalendarDayData from '../models/CalendarDayData';
+import CalendarDayTask from '../models/CalendarDayTask';
 import CalendarDayDataDto from '../dtos/calendarDayDataDto';
+import CalendarDayTaskDto from '../dtos/calendarDayTaskDto';
 
 class calendarService {
   async getDeadlines(userId: any, deadlineIds: any) {
@@ -18,16 +20,22 @@ class calendarService {
     }
     return deadlines;
   }
-
-  async getCalendarNotes(userId: any, menuId: any) {
-    const notes = await CalendarDayData.find({ userId, menuId });
-    if (!notes) {
+  async getTasks(userId: any, menuId: any) {
+    const items = await CalendarDayTask.find({ userId, menuId });
+    if (!items) {
       return [];
     } else {
-      return notes.map((item: any) => new CalendarDayDataDto(item));
+      return items.map((item: any) => new CalendarDayTaskDto(item));
     }
   }
-
+  async getCalendarDayDataList(userId: any, menuId: any) {
+    const dayDataList = await CalendarDayData.find({ userId, menuId });
+    if (!dayDataList) {
+      return [];
+    } else {
+      return dayDataList.map((item: any) => new CalendarDayDataDto(item));
+    }
+  }
   async getCalendarData(userId: any, menuId: any) {
     const item = await CalendarData.findOne({ userId, menuId });
     if (!item) {
@@ -37,8 +45,9 @@ class calendarService {
       const itemDto = new CalendarDataDto(item);
 
       const deadlines = await this.getDeadlines(userId, item.deadlineIds);
-      const notes = await this.getCalendarNotes(userId, menuId);
-      return { ...itemDto, deadlines, notes };
+      const tasks = await this.getTasks(userId, item.menuId);
+      const dayDataList = await this.getCalendarDayDataList(userId, menuId);
+      return { ...itemDto, deadlines, dayDataList, tasks };
     }
   }
   async updateCalendarData(userId: any, item: any) {
@@ -55,9 +64,12 @@ class calendarService {
         const itemDto = new CalendarDataDto(updatedItem);
 
         const deadlines = await this.getDeadlines(userId, item.deadlineIds);
-        const notes = await this.getCalendarNotes(userId, updatedItem.menuId);
+        const dayDataList = await this.getCalendarDayDataList(
+          userId,
+          updatedItem.menuId
+        );
 
-        return { ...itemDto, deadlines, notes };
+        return { ...itemDto, deadlines, dayDataList };
       } else {
         return null;
       }
@@ -70,9 +82,12 @@ class calendarService {
       const itemDto = new CalendarDataDto(createdItem);
 
       const deadlines = await this.getDeadlines(userId, item.deadlineIds);
-      const notes = await this.getCalendarNotes(userId, createdItem.menuId);
+      const dayDataList = await this.getCalendarDayDataList(
+        userId,
+        createdItem.menuId
+      );
 
-      return itemDto ? { ...itemDto, deadlines, notes } : null;
+      return itemDto ? { ...itemDto, deadlines, dayDataList } : null;
     }
   }
   async deleteCalendarData(userId: any, itemId: any) {
@@ -95,6 +110,7 @@ class calendarService {
     });
     if (updatedItem) {
       updatedItem.note = item.note;
+      updatedItem.completedDayTaskIds = item.completedDayTaskIds;
       updatedItem.save();
       const itemDto = new CalendarDayDataDto(updatedItem);
       return itemDto;
@@ -104,9 +120,39 @@ class calendarService {
         note: item.note,
         date: item.date,
         menuId: item.menuId,
+        completedDayTaskIds: item.completedDayTaskIds,
       });
       const itemDto = new CalendarDayDataDto(createdItem);
       return itemDto ? itemDto : null;
+    }
+  }
+  async updateCalendarDayTask(userId: any, item: any) {
+    const updatedItem = await CalendarDayTask.findOne({
+      userId,
+      _id: item.id,
+    });
+    if (updatedItem) {
+      updatedItem.text = item.text;
+      updatedItem.dayIds = item.dayIds;
+      updatedItem.save();
+      const itemDto = new CalendarDayTaskDto(updatedItem);
+      return itemDto;
+    } else {
+      const createdItem = await CalendarDayTask.create({
+        userId,
+        text: item.text,
+        menuId: item.menuId,
+      });
+      const itemDto = new CalendarDayTaskDto(createdItem);
+      return itemDto ? itemDto : null;
+    }
+  }
+  async deleteCalendarDayTask(userId: any, id: string) {
+    const deletedItem = await CalendarDayTask.deleteOne({ userId, _id: id });
+    if (deletedItem?.deletedCount) {
+      return id;
+    } else {
+      return;
     }
   }
 }

@@ -19,5 +19,15 @@ calendarRouter.post(
   authMiddleware,
   calendarController.updateCalendarDayData
 );
+calendarRouter.post(
+  '/day_task',
+  authMiddleware,
+  calendarController.updateCalendarDayTask
+);
+calendarRouter.delete(
+  '/day_task',
+  authMiddleware,
+  calendarController.deleteCalendarDayTask
+);
 
 export default calendarRouter;

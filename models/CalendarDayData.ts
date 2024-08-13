@@ -5,6 +5,7 @@ const CalendarDayData = new Schema({
   date: { type: Number },
   userId: { type: String },
   menuId: { type: String },
+  completedDayTaskIds: { type: [String] },
 });
 
 export default model('calendar_day_data', CalendarDayData);

@@ -88,6 +88,52 @@ class calendarController {
       next(e);
     }
   }
+
+  async updateCalendarDayTask(req: any, res: any, next: any) {
+    try {
+      const body = req.body;
+      if (!body) {
+        return next(ApiError.BadRequest('Нет тела запроса', []));
+      }
+      const user: any = await userService.getUserFromCookies(req.cookies);
+      if (!user) {
+        return next(ApiError.UnauthorizedError());
+      }
+      const updatedItem = await calendarService.updateCalendarDayTask(
+        user.id,
+        body
+      );
+      if (!updatedItem) {
+        return next(ApiError.BadRequest('Не удалось обновить запись', []));
+      }
+      return res.json(updatedItem);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async deleteCalendarDayTask(req: any, res: any, next: any) {
+    try {
+      const itemId = req.query.id;
+      if (!itemId) {
+        return next(ApiError.BadRequest('id is required', []));
+      }
+      const user: any = await userService.getUserFromCookies(req.cookies);
+      if (!user) {
+        return next(ApiError.UnauthorizedError());
+      }
+      const updatedItem = await calendarService.deleteCalendarDayTask(
+        user.id,
+        itemId
+      );
+      if (!updatedItem) {
+        return next(ApiError.BadRequest('Не удалось обновить запись', []));
+      }
+      return res.json(updatedItem);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export default new calendarController();

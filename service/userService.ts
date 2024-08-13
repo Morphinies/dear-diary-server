@@ -99,10 +99,9 @@ class UserService {
     }
     const userData: any = await tokenService.validateRefreshToken(refreshToken);
     const tokenFromDb = await tokenService.findToken(refreshToken);
-    if (!userData || !tokenFromDb) {
+    if (!tokenFromDb) {
       throw ApiError.UnauthorizedError();
     }
-
     const user = await User.findById(userData.id);
     const userDto = new UserDto(user);
     const tokens = tokenService.generateToken({ ...userDto });
@@ -110,7 +109,7 @@ class UserService {
 
     return {
       ...tokens,
-      user: userDto,
+      // user: userDto,
     };
   }
   async getAllUsers() {
